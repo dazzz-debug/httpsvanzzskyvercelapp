@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Kelas Sekolah</title>
+    <style>
+        :root {
+            --accent: #2563EB;
+            --accent-deep: #1E40AF;
+            --accent-soft: #3B82F6;
+            --bg-deep: #0F172A;
+            --bg-card: #1E293B;
+            --bg-surface: #334155;
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --text-subtle: #475569;
+            --border: #334155;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+        }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 90px;
+            font-size: 14px;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ========== TABS ========== */
+        .tabs-wrapper {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 66px;
+            z-index: 99;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            padding: 10px 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tabs::-webkit-scrollbar { display: none; }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* ========== MAIN ========== */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== STATS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: rgba(37, 99, 235, 0.15);
+            flex-shrink: 0;
+        }
+
+        .stat-info h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .stat-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* ========== SECTION HEADER ========== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 11px;
+        }
+
+        /* ========== SEARCH & FILTER ========== */
+        .search-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .filter-select {
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* ========== TABLE ========== */
+        .table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        thead {
+            background: var(--bg-surface);
+        }
+
+        th {
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 14px;
+            font-size: 13px;
+            color: var(--text-main);
+            border-top: 1px solid var(--border);
+        }
+
+        tbody tr {
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        .badge-info {
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--accent-soft);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .action-btn.delete:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .empty h3 {
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .empty p {
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        /* ========== MODAL ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 200;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            max-width: 520px;
+            width: 100%;
+            padding: 24px;
+            position: relative;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ========== FORM ========== */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ========== FLOATING BUTTON ========== */
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+            z-index: 99;
+            transition: all 0.2s;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* ========== TOAST ========== */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            color: var(--text-main);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 300;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success { border-color: var(--success); }
+        .toast.error { border-color: var(--danger); }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .section-header { flex-direction: column; align-items: stretch; }
+            .section-header .btn { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <span id="appTitle">DATA KELAS</span>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="exportData()" title="Export Data">📤</button>
+                <button class="icon-btn" onclick="importData()" title="Import Data">📥</button>
+                <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- TABS -->
+    <div class="tabs-wrapper">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'tabDashboard')">📊 Dashboard</button>
+            <button class="tab" onclick="switchTab(event, 'tabKelas')">🏫 Kelas</button>
+            <button class="tab" onclick="switchTab(event, 'tabSiswa')">👨‍🎓 Siswa</button>
+            <button class="tab" onclick="switchTab(event, 'tabGuru')">👨‍🏫 Guru</button>
+            <button class="tab" onclick="switchTab(event, 'tabMapel')">📚 Mapel</button>
+            <button class="tab" onclick="switchTab(event, 'tabJadwal')">📅 Jadwal</button>
+            <button class="tab" onclick="switchTab(event, 'tabNilai')">📝 Nilai</button>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <main>
+        <!-- ========== TAB DASHBOARD ========== -->
+        <div class="tab-content active" id="tabDashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏫</div>
+                    <div class="stat-info">
+                        <h3 id="statKelas">0</h3>
+                        <p>Kelas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👨‍🎓</div>
+                    <div class="stat-info">
+                        <h3 id="statSiswa">0</h3>
+                        <p>Siswa</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👨‍🏫</div>
+                    <div class="stat-info">
+                        <h3 id="statGuru">0</h3>
+                        <p>Guru</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-info">
+                        <h3 id="statMapel">0</h3>
+                        <p>Mapel</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <div class="section-title">📋 Ringkasan Data</div>
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Jumlah</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboardTable">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TAB KELAS ========== -->
+        <div class="tab-content" id="tabKelas">
+            <div class="section-header">
+                <div class="section-title">🏫 Data Kelas</div>
+                <button class="btn btn-primary" onclick="openForm('kelas')">➕ Tambah Kelas</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchKelas" placeholder="🔍 Cari kelas..." oninput="renderKelas()">
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kelas</th>
+                                <th>Wali Kelas</th>
+                                <th>Ruang</th>
+                                <th>Jumlah Siswa</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableKelas">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TAB SISWA ========== -->
+        <div class="tab-content" id="tabSiswa">
+            <div class="section-header">
+                <div class="section-title">👨‍🎓 Data Siswa</div>
+                <button class="btn btn-primary" onclick="openForm('siswa')">➕ Tambah Siswa</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchSiswa" placeholder="🔍 Cari siswa..." oninput="renderSiswa()">
+                <select class="filter-select" id="filterKelasSiswa" onchange="renderSiswa()">
+                    <option value="">Semua Kelas</option>
+                </select>
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NISN</th>
+                                <th>Nama</th>
+                                <th>Kelas</th>
+                                <th>JK</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableSiswa">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TAB GURU ========== -->
+        <div class="tab-content" id="tabGuru">
+            <div class="section-header">
+                <div class="section-title">👨‍🏫 Data Guru</div>
+                <button class="btn btn-primary" onclick="openForm('guru')">➕ Tambah Guru</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchGuru" placeholder="🔍 Cari guru..." oninput="renderGuru()">
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>NIP</th>
+                                <th>Nama</th>
+                                <th>Mapel</th>
+                                <th>No HP</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableGuru">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TAB MAPEL ========== -->
+        <div class="tab-content" id="tabMapel">
+            <div class="section-header">
+                <div class="section-title">📚 Data Mata Pelajaran</div>
+                <button class="btn btn-primary" onclick="openForm('mapel')">➕ Tambah Mapel</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchMapel" placeholder="🔍 Cari mapel..." oninput="renderMapel()">
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode</th>
+                                <th>Nama Mapel</th>
+                                <th>Guru Pengajar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableMapel">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TAB JADWAL ========== -->
+        <div class="tab-content" id="tabJadwal">
+            <div class="section-header">
+                <div class="section-title">📅 Jadwal Pelajaran</div>
+                <button class="btn btn-primary" onclick="openForm('jadwal')">➕ Tambah Jadwal</button>
+            </div>
+
+            <div class="search-box">
+                <select class="filter-select" id="filterJadwalKelas" onchange="renderJadwal()">
+                    <option value="">Semua Kelas</option>
+                </select>
+                <select class="filter-select" id="filterJadwalHari" onchange="renderJadwal()">
+                    <option value="">Semua Hari</option>
+                    <option>Senin</option>
+                    <option>Selasa</option>
+                    <option>Rabu</option>
+                    <option>Kamis</option>
+                    <option>Jumat</option>
+                    <option>Sabtu</option>
+                </select>
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kelas</th>
+                                <th>Hari</th>
+                                <th>Jam</th>
+                                <th>Mapel</th>
+                                <th>Guru</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableJadwal">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== TAB NILAI ========== -->
+        <div class="tab-content" id="tabNilai">
+            <div class="section-header">
+                <div class="section-title">📝 Nilai Siswa</div>
+                <button class="btn btn-primary" onclick="openForm('nilai')">➕ Tambah Nilai</button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchNilai" placeholder="🔍 Cari siswa..." oninput="renderNilai()">
+            </div>
+
+            <div class="table-wrapper">
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Siswa</th>
+                                <th>Kelas</th>
+                                <th>Mapel</th>
+                                <th>Nilai</th>
+                                <th>Grade</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableNilai">
+                            <!-- Auto generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FLOATING BUTTON -->
+    <button class="floating-btn" onclick="openSettings()">⚙️</button>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ========== MODAL FORM ========== -->
+    <div class="modal-overlay" id="formModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">➕ Tambah Data</h2>
+                <button class="close-btn" onclick="closeModal('formModal')">✕</button>
+            </div>
+            <div id="formContent">
+                <!-- Dynamic -->
+            </div>
+            <button class="btn btn-primary" onclick="saveForm()" style="width: 100%; justify-content: center; margin-top: 10px;">
+                💾 Simpan
+            </button>
+        </div>
+    </div>
+
+    <!-- ========== MODAL SETTINGS ========== -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>⚙️ Pengaturan</h2>
+                <button class="close-btn" onclick="closeModal('settingsModal')">✕</button>
+            </div>
+
+            <div class="form-group">
+                <label>Nama Aplikasi</label>
+                <input type="text" id="inputAppTitle" oninput="updateAppTitle(this.value)">
+            </div>
+
+            <div class="form-group">
+                <label>Warna Tema</label>
+                <input type="color" id="inputAccent" onchange="updateAccent(this.value)">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                    <div style="width:36px;height:36px;border-radius:10px;background:#2563EB;cursor:pointer;" onclick="setAccent('#2563EB')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#10B981;cursor:pointer;" onclick="setAccent('#10B981')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#F59E0B;cursor:pointer;" onclick="setAccent('#F59E0B')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#EF4444;cursor:pointer;" onclick="setAccent('#EF4444')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#8B5CF6;cursor:pointer;" onclick="setAccent('#8B5CF6')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#EC4899;cursor:pointer;" onclick="setAccent('#EC4899')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#06B6D4;cursor:pointer;" onclick="setAccent('#06B6D4')"></div>
+                    <div style="width:36px;height:36px;border-radius:10px;background:#FF6B00;cursor:pointer;" onclick="setAccent('#FF6B00')"></div>
+                </div>
+            </div>
+
+            <button class="btn btn-danger" onclick="resetData()" style="width: 100%; justify-content: center; margin-top: 10px;">
+                🗑️ Reset Semua Data
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIG ==========
+        const APP_CONFIG = {
+            title: 'DATA KELAS',
+            accent: '#2563EB'
+        };
+
+        // ========== DATABASE ==========
+        let db = {
+            kelas: [],
+            siswa: [],
+            guru: [],
+            mapel: [],
+            jadwal: [],
+            nilai: []
+        };
+
+        let currentForm = '';
+        let editingId = null;
+        let editingIndex = -1;
+
+        // ========== INIT ==========
+        function init() {
+            const saved = localStorage.getItem('kelas_app_db');
+            if (saved) {
+                try {
+                    db = { ...db, ...JSON.parse(saved) };
+                } catch (e) {
+                    console.error('Load error:', e);
+                }
+            }
+
+            const savedConfig = localStorage.getItem('kelas_app_config');
+            if (savedConfig) {
+                try {
+                    const cfg = JSON.parse(savedConfig);
+                    APP_CONFIG.title = cfg.title || APP_CONFIG.title;
+                    APP_CONFIG.accent = cfg.accent || APP_CONFIG.accent;
+                } catch (e) {}
+            }
+
+            applyConfig();
+            renderAll();
+        }
+
+        // ========== APPLY CONFIG ==========
+        function applyConfig() {
+            document.getElementById('appTitle').textContent = APP_CONFIG.title;
+            document.documentElement.style.setProperty('--accent', APP_CONFIG.accent);
+            document.documentElement.style.setProperty('--accent-deep', shadeColor(APP_CONFIG.accent, -20));
+            document.documentElement.style.setProperty('--accent-soft', shadeColor(APP_CONFIG.accent, 20));
+            document.getElementById('inputAppTitle').value = APP_CONFIG.title;
+            document.getElementById('inputAccent').value = APP_CONFIG.accent;
+        }
+
+        function updateAppTitle(val) {
+            APP_CONFIG.title = val || 'DATA KELAS';
+            document.getElementById('appTitle').textContent = APP_CONFIG.title;
+            saveConfig();
+        }
+
+        function updateAccent(val) {
+            APP_CONFIG.accent = val;
+            applyConfig();
+            saveConfig();
+        }
+
+        function setAccent(val) {
+            APP_CONFIG.accent = val;
+            applyConfig();
+            saveConfig();
+        }
+
+        function saveConfig() {
+            localStorage.setItem('kelas_app_config', JSON.stringify(APP_CONFIG));
+        }
+
+        // ========== SAVE DB ==========
+        function saveDB() {
+            localStorage.setItem('kelas_app_db', JSON.stringify(db));
+        }
+
+        // ========== TABS ==========
+        function switchTab(e, tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // ========== RENDER ALL ==========
+        function renderAll() {
+            renderDashboard();
+            renderKelas();
+            renderSiswa();
+            renderGuru();
+            renderMapel();
+            renderJadwal();
+            renderNilai();
+            updateFilterOptions();
+        }
+
+        // ========== DASHBOARD ==========
+        function renderDashboard() {
+            document.getElementById('statKelas').textContent = db.kelas.length;
+            document.getElementById('statSiswa').textContent = db.siswa.length;
+            document.getElementById('statGuru').textContent = db.guru.length;
+            document.getElementById('statMapel').textContent = db.mapel.length;
+
+            const tbody = document.getElementById('dashboardTable');
+            const rows = [
+                { name: '🏫 Kelas', count: db.kelas.length, status: 'Aktif' },
+                { name: '👨‍🎓 Siswa', count: db.siswa.length, status: 'Aktif' },
+                { name: '👨‍🏫 Guru', count: db.guru.length, status: 'Aktif' },
+                { name: '📚 Mata Pelajaran', count: db.mapel.length, status: 'Aktif' },
+                { name: '📅 Jadwal', count: db.jadwal.length, status: 'Aktif' },
+                { name: '📝 Nilai', count: db.nilai.length, status: 'Aktif' }
+            ];
+
+            tbody.innerHTML = rows.map(r => `
+                <tr>
+                    <td>${r.name}</td>
+                    <td><strong>${r.count}</strong></td>
+                    <td><span class="badge badge-success">${r.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== KELAS ==========
+        function renderKelas() {
+            const search = (document.getElementById('searchKelas')?.value || '').toLowerCase();
+            const tbody = document.getElementById('tableKelas');
+            const filtered = db.kelas.filter(k =>
+                (k.nama || '').toLowerCase().includes(search) ||
+                (k.wali || '').toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">🏫</div><h3>Belum ada kelas</h3><p>Klik "Tambah Kelas" untuk memulai</p></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((k, i) => {
+                const jumlahSiswa = db.siswa.filter(s => s.kelas === k.nama).length;
+                return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><strong>${k.nama || '-'}</strong></td>
+                        <td>${k.wali || '-'}</td>
+                        <td>${k.ruang || '-'}</td>
+                        <td><span class="badge badge-info">${jumlahSiswa} siswa</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn" onclick="editItem('kelas', ${db.kelas.indexOf(k)})">✏️</button>
+                                <button class="action-btn delete" onclick="deleteItem('kelas', ${db.kelas.indexOf(k)})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ========== SISWA ==========
+        function renderSiswa() {
+            const search = (document.getElementById('searchSiswa')?.value || '').toLowerCase();
+            const filterKelas = document.getElementById('filterKelasSiswa')?.value || '';
+            const tbody = document.getElementById('tableSiswa');
+
+            const filtered = db.siswa.filter(s => {
+                const matchSearch = (s.nama || '').toLowerCase().includes(search) || (s.nisn || '').toLowerCase().includes(search);
+                const matchKelas = !filterKelas || s.kelas === filterKelas;
+                return matchSearch && matchKelas;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">👨‍🎓</div><h3>Belum ada siswa</h3><p>Klik "Tambah Siswa" untuk memulai</p></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((s, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${s.nisn || '-'}</td>
+                    <td><strong>${s.nama || '-'}</strong></td>
+                    <td><span class="badge badge-info">${s.kelas || '-'}</span></td>
+                    <td>${s.jk || '-'}</td>
+                    <td><span class="badge badge-success">Aktif</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn" onclick="editItem('siswa', ${db.siswa.indexOf(s)})">✏️</button>
+                            <button class="action-btn delete" onclick="deleteItem('siswa', ${db.siswa.indexOf(s)})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== GURU ==========
+        function renderGuru() {
+            const search = (document.getElementById('searchGuru')?.value || '').toLowerCase();
+            const tbody = document.getElementById('tableGuru');
+            const filtered = db.guru.filter(g =>
+                (g.nama || '').toLowerCase().includes(search) ||
+                (g.nip || '').toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">👨‍🏫</div><h3>Belum ada guru</h3><p>Klik "Tambah Guru" untuk memulai</p></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((g, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${g.nip || '-'}</td>
+                    <td><strong>${g.nama || '-'}</strong></td>
+                    <td>${g.mapel || '-'}</td>
+                    <td>${g.hp || '-'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn" onclick="editItem('guru', ${db.guru.indexOf(g)})">✏️</button>
+                            <button class="action-btn delete" onclick="deleteItem('guru', ${db.guru.indexOf(g)})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== MAPEL ==========
+        function renderMapel() {
+            const search = (document.getElementById('searchMapel')?.value || '').toLowerCase();
+            const tbody = document.getElementById('tableMapel');
+            const filtered = db.mapel.filter(m =>
+                (m.nama || '').toLowerCase().includes(search) ||
+                (m.kode || '').toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="empty-icon">📚</div><h3>Belum ada mapel</h3><p>Klik "Tambah Mapel" untuk memulai</p></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((m, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${m.kode || '-'}</td>
+                    <td><strong>${m.nama || '-'}</strong></td>
+                    <td>${m.guru || '-'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn" onclick="editItem('mapel', ${db.mapel.indexOf(m)})">✏️</button>
+                            <button class="action-btn delete" onclick="deleteItem('mapel', ${db.mapel.indexOf(m)})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== JADWAL ==========
+        function renderJadwal() {
+            const filterKelas = document.getElementById('filterJadwalKelas')?.value || '';
+            const filterHari = document.getElementById('filterJadwalHari')?.value || '';
+            const tbody = document.getElementById('tableJadwal');
+
+            const filtered = db.jadwal.filter(j => {
+                const matchKelas = !filterKelas || j.kelas === filterKelas;
+                const matchHari = !filterHari || j.hari === filterHari;
+                return matchKelas && matchHari;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📅</div><h3>Belum ada jadwal</h3><p>Klik "Tambah Jadwal" untuk memulai</p></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((j, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><span class="badge badge-info">${j.kelas || '-'}</span></td>
+                    <td>${j.hari || '-'}</td>
+                    <td>${j.jam || '-'}</td>
+                    <td>${j.mapel || '-'}</td>
+                    <td>${j.guru || '-'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn" onclick="editItem('jadwal', ${db.jadwal.indexOf(j)})">✏️</button>
+                            <button class="action-btn delete" onclick="deleteItem('jadwal', ${db.jadwal.indexOf(j)})">🗑️</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // ========== NILAI ==========
+        function renderNilai() {
+            const search = (document.getElementById('searchNilai')?.value || '').toLowerCase();
+            const tbody = document.getElementById('tableNilai');
+            const filtered = db.nilai.filter(n =>
+                (n.siswa || '').toLowerCase().includes(search)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📝</div><h3>Belum ada nilai</h3><p>Klik "Tambah Nilai" untuk memulai</p></div></td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((n, i) => {
+                const nilai = parseFloat(n.nilai) || 0;
+                let grade = 'E', badgeClass = 'badge-danger';
+                if (nilai >= 85) { grade = 'A'; badgeClass = 'badge-success'; }
+                else if (nilai >= 75) { grade = 'B'; badgeClass = 'badge-info'; }
+                else if (nilai >= 65) { grade = 'C'; badgeClass = 'badge-warning'; }
+                else if (nilai >= 55) { grade = 'D'; badgeClass = 'badge-danger'; }
+
+                return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><strong>${n.siswa || '-'}</strong></td>
+                        <td>${n.kelas || '-'}</td>
+                        <td>${n.mapel || '-'}</td>
+                        <td><strong>${n.nilai || '0'}</strong></td>
+                        <td><span class="badge ${badgeClass}">${grade}</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn" onclick="editItem('nilai', ${db.nilai.indexOf(n)})">✏️</button>
+                                <button class="action-btn delete" onclick="deleteItem('nilai', ${db.nilai.indexOf(n)})">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ========== UPDATE FILTER OPTIONS ==========
+        function updateFilterOptions() {
+            const filterKelasSiswa = document.getElementById('filterKelasSiswa');
+            const filterJadwalKelas = document.getElementById('filterJadwalKelas');
+
+            const options = db.kelas.map(k => `<option value="${k.nama}">${k.nama}</option>`).join('');
+
+            if (filterKelasSiswa) filterKelasSiswa.innerHTML = '<option value="">Semua Kelas</option>' + options;
+            if (filterJadwalKelas) filterJadwalKelas.innerHTML = '<option value="">Semua Kelas</option>' + options;
+        }
+
+        // ========== FORM ==========
+        function openForm(type, index = -1) {
+            currentForm = type;
+            editingIndex = index;
+            const modal = document.getElementById('formModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('formContent');
+
+            const item = index >= 0 ? db[type][index] : {};
+
+            let html = '';
+
+            if (type === 'kelas') {
+                title.innerHTML = index >= 0 ? '✏️ Edit Kelas' : '➕ Tambah Kelas';
+                html = `
+                    <div class="form-group">
+                        <label>Nama Kelas <span class="required">*</span></label>
+                        <input type="text" id="f_nama" value="${item.nama || ''}" placeholder="Contoh: X IPA 1">
+                    </div>
+                    <div class="form-group">
+                        <label>Wali Kelas</label>
+                        <input type="text" id="f_wali" value="${item.wali || ''}" placeholder="Nama wali kelas">
+                    </div>
+                    <div class="form-group">
+                        <label>Ruang</label>
+                        <input type="text" id="f_ruang" value="${item.ruang || ''}" placeholder="Contoh: R-101">
+                    </div>
+                `;
+            } else if (type === 'siswa') {
+                title.innerHTML = index >= 0 ? '✏️ Edit Siswa' : '➕ Tambah Siswa';
+                const kelasOptions = db.kelas.map(k => `<option value="${k.nama}" ${item.kelas === k.nama ? 'selected' : ''}>${k.nama}</option>`).join('');
+                html = `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NISN <span class="required">*</span></label>
+                            <input type="text" id="f_nisn" value="${item.nisn || ''}" placeholder="12345678">
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <select id="f_jk">
+                                <option value="L" ${item.jk === 'L' ? 'selected' : ''}>Laki-laki</option>
+                                <option value="P" ${item.jk === 'P' ? 'selected' : ''}>Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Lengkap <span class="required">*</span></label>
+                        <input type="text" id="f_nama" value="${item.nama || ''}" placeholder="Nama siswa">
+                    </div>
+                    <div class="form-group">
+                        <label>Kelas <span class="required">*</span></label>
+                        <select id="f_kelas">
+                            <option value="">-- Pilih Kelas --</option>
+                            ${kelasOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Lahir</label>
+                        <input type="date" id="f_tgl" value="${item.tgl || ''}">
+                    </div>
+                `;
+            } else if (type === 'guru') {
+                title.innerHTML = index >= 0 ? '✏️ Edit Guru' : '➕ Tambah Guru';
+                html = `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>NIP</label>
+                            <input type="text" id="f_nip" value="${item.nip || ''}" placeholder="NIP guru">
+                        </div>
+                        <div class="form-group">
+                            <label>No HP</label>
+                            <input type="text" id="f_hp" value="${item.hp || ''}" placeholder="08xxxx">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Lengkap <span class="required">*</span></label>
+                        <input type="text" id="f_nama" value="${item.nama || ''}" placeholder="Nama guru">
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <input type="text" id="f_mapel" value="${item.mapel || ''}" placeholder="Contoh: Matematika">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="f_email" value="${item.email || ''}" placeholder="guru@sekolah.com">
+                    </div>
+                `;
+            } else if (type === 'mapel') {
+                title.innerHTML = index >= 0 ? '✏️ Edit Mapel' : '➕ Tambah Mapel';
+                const guruOptions = db.guru.map(g => `<option value="${g.nama}" ${item.guru === g.nama ? 'selected' : ''}>${g.nama}</option>`).join('');
+                html = `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Kode Mapel <span class="required">*</span></label>
+                            <input type="text" id="f_kode" value="${item.kode || ''}" placeholder="MTK">
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Mapel <span class="required">*</span></label>
+                            <input type="text" id="f_nama" value="${item.nama || ''}" placeholder="Matematika">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Pengajar</label>
+                        <select id="f_guru">
+                            <option value="">-- Pilih Guru --</option>
+                            ${guruOptions}
+                        </select>
+                    </div>
+                `;
+            } else if (type === 'jadwal') {
+                title.innerHTML = index >= 0 ? '✏️ Edit Jadwal' : '➕ Tambah Jadwal';
+                const kelasOptions = db.kelas.map(k => `<option value="${k.nama}" ${item.kelas === k.nama ? 'selected' : ''}>${k.nama}</option>`).join('');
+                const mapelOptions = db.mapel.map(m => `<option value="${m.nama}" ${item.mapel === m.nama ? 'selected' : ''}>${m.nama}</option>`).join('');
+                const guruOptions = db.guru.map(g => `<option value="${g.nama}" ${item.guru === g.nama ? 'selected' : ''}>${g.nama}</option>`).join('');
+                const hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                const hariOptions = hariList.map(h => `<option value="${h}" ${item.hari === h ? 'selected' : ''}>${h}</option>`).join('');
+
+                html = `
+                    <div class="form-group">
+                        <label>Kelas <span class="required">*</span></label>
+                        <select id="f_kelas">
+                            <option value="">-- Pilih Kelas --</option>
+                            ${kelasOptions}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Hari <span class="required">*</span></label>
+                            <select id="f_hari">
+                                <option value="">-- Pilih --</option>
+                                ${hariOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Jam</label>
+                            <input type="text" id="f_jam" value="${item.jam || ''}" placeholder="07:00 - 08:30">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran <span class="required">*</span></label>
+                        <select id="f_mapel">
+                            <option value="">-- Pilih Mapel --</option>
+                            ${mapelOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Pengajar</label>
+                        <select id="f_guru">
+                            <option value="">-- Pilih Guru --</option>
+                            ${guruOptions}
+                        </select>
+                    </div>
+                `;
+            } else if (type === 'nilai') {
+                title.innerHTML = index >= 0 ? '✏️ Edit Nilai' : '➕ Tambah Nilai';
+                const siswaOptions = db.siswa.map(s => `<option value="${s.nama}" ${item.siswa === s.nama ? 'selected' : ''}>${s.nama} (${s.kelas})</option>`).join('');
+                const mapelOptions = db.mapel.map(m => `<option value="${m.nama}" ${item.mapel === m.nama ? 'selected' : ''}>${m.nama}</option>`).join('');
+
+                html = `
+                    <div class="form-group">
+                        <label>Siswa <span class="required">*</span></label>
+                        <select id="f_siswa" onchange="autoFillKelas()">
+                            <option value="">-- Pilih Siswa --</option>
+                            ${siswaOptions}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Kelas</label>
+                            <input type="text" id="f_kelas" value="${item.kelas || ''}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Mapel <span class="required">*</span></label>
+                            <select id="f_mapel">
+                                <option value="">-- Pilih --</option>
+                                ${mapelOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nilai (0-100) <span class="required">*</span></label>
+                        <input type="number" id="f_nilai" value="${item.nilai || ''}" min="0" max="100" placeholder="85">
+                    </div>
+                `;
+            }
+
+            content.innerHTML = html;
+            modal.classList.add('active');
+        }
+
+        function autoFillKelas() {
+            const siswaName = document.getElementById('f_siswa').value;
+            const siswa = db.siswa.find(s => s.nama === siswaName);
+            if (siswa) {
+                document.getElementById('f_kelas').value = siswa.kelas || '';
+            }
+        }
+
+        // ========== SAVE FORM ==========
+        function saveForm() {
+            const type = currentForm;
+
+            let data = {};
+
+            if (type === 'kelas') {
+                data.nama = document.getElementById('f_nama').value.trim();
+                data.wali = document.getElementById('f_wali').value.trim();
+                data.ruang = document.getElementById('f_ruang').value.trim();
+                if (!data.nama) { showToast('❌ Nama kelas wajib diisi!', 'error'); return; }
+            } else if (type === 'siswa') {
+                data.nisn = document.getElementById('f_nisn').value.trim();
+                data.nama = document.getElementById('f_nama').value.trim();
+                data.jk = document.getElementById('f_jk').value;
+                data.kelas = document.getElementById('f_kelas').value;
+                data.tgl = document.getElementById('f_tgl').value;
+                if (!data.nisn || !data.nama || !data.kelas) { showToast('❌ Isi NISN, Nama, dan Kelas!', 'error'); return; }
+            } else if (type === 'guru') {
+                data.nip = document.getElementById('f_nip').value.trim();
+                data.nama = document.getElementById('f_nama').value.trim();
+                data.mapel = document.getElementById('f_mapel').value.trim();
+                data.hp = document.getElementById('f_hp').value.trim();
+                data.email = document.getElementById('f_email').value.trim();
+                if (!data.nama) { showToast('❌ Nama guru wajib diisi!', 'error'); return; }
+            } else if (type === 'mapel') {
+                data.kode = document.getElementById('f_kode').value.trim();
+                data.nama = document.getElementById('f_nama').value.trim();
+                data.guru = document.getElementById('f_guru').value;
+                if (!data.kode || !data.nama) { showToast('❌ Kode dan Nama mapel wajib diisi!', 'error'); return; }
+            } else if (type === 'jadwal') {
+                data.kelas = document.getElementById('f_kelas').value;
+                data.hari = document.getElementById('f_hari').value;
+                data.jam = document.getElementById('f_jam').value.trim();
+                data.mapel = document.getElementById('f_mapel').value;
+                data.guru = document.getElementById('f_guru').value;
+                if (!data.kelas || !data.hari || !data.mapel) { showToast('❌ Isi Kelas, Hari, dan Mapel!', 'error'); return; }
+            } else if (type === 'nilai') {
+                data.siswa = document.getElementById('f_siswa').value;
+                data.kelas = document.getElementById('f_kelas').value;
+                data.mapel = document.getElementById('f_mapel').value;
+                data.nilai = document.getElementById('f_nilai').value;
+                if (!data.siswa || !data.mapel || !data.nilai) { showToast('❌ Isi semua field!', 'error'); return; }
+            }
+
+            if (editingIndex >= 0) {
+                db[type][editingIndex] = data;
+                showToast('✅ Data berhasil diupdate!', 'success');
+            } else {
+                db[type].push(data);
+                showToast('✅ Data berhasil ditambahkan!', 'success');
+            }
+
+            saveDB();
+            renderAll();
+            closeModal('formModal');
+        }
+
+        // ========== EDIT / DELETE ==========
+        function editItem(type, index) {
+            openForm(type, index);
+        }
+
+        function deleteItem(type, index) {
+            if (!confirm('Yakin mau hapus data ini?')) return;
+            db[type].splice(index, 1);
+            saveDB();
+            renderAll();
+            showToast('🗑️ Data berhasil dihapus!', 'success');
+        }
+
+        // ========== MODAL ==========
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+
+        // ========== EXPORT / IMPORT ==========
+        function exportData() {
+            const dataStr = JSON.stringify(db, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'data-kelas-' + new Date().toISOString().slice(0, 10) + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('📤 Data berhasil di-export!', 'success');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        db = { ...db, ...imported };
+                        saveDB();
+                        renderAll();
+                        showToast('📥 Data berhasil di-import!', 'success');
+                    } catch (err) {
+                        showToast('❌ File invalid!', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // ========== RESET ==========
+        function resetData() {
+            if (!confirm('⚠️ Yakin mau hapus SEMUA data? Tindakan ini tidak bisa dibatalkan!')) return;
+            if (!confirm('⚠️ KONFIRMASI TERAKHIR: Semua data akan hilang!')) return;
+
+            db = { kelas: [], siswa: [], guru: [], mapel: [], jadwal: [], nilai: [] };
+            saveDB();
+            renderAll();
+            closeModal('settingsModal');
+            showToast('🗑️ Semua data berhasil di-reset!', 'success');
+        }
+
+        // ========== TOAST ==========
+        function showToast(msg, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // ========== HELPERS ==========
+        function shadeColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+            const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+            return '#' + (0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1);
+        }
+
+        // ========== START ==========
+        init();
+
+        console.log('🔥 Data Kelas App siap digunakan!');
+    </script>
+
+</body>
+</html>
