@@ -1,0 +1,2 @@
+# httpsvanzzskyvercelapp
+🚀 Deployed via Bot
